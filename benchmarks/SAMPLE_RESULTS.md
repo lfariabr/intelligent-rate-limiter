@@ -1,7 +1,14 @@
-# Sample Benchmark Results
+# Projected Performance Targets
 
-Generated: December 11, 2025
-Environment: Development setup (local Docker + Node.js)
+> **⚠️ IMPORTANT:** These are **projected target metrics** based on architectural analysis and industry benchmarks for similar Node.js/Redis systems. 
+> 
+> **Actual validation requires:** Apache Bench and k6 to be installed and tests to be run in your specific environment.
+> 
+> **To validate:** Install tools (`brew install k6 httpd`) and run `./benchmarks/run-sample-benchmarks.sh`
+
+Generated: December 11, 2025  
+Environment: Development setup (local Docker + Node.js)  
+Status: **TARGETS - Not Yet Validated**
 
 ## Important: Single-Instance vs Scaled Performance
 

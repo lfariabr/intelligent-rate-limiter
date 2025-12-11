@@ -1,4 +1,6 @@
 #!/bin/bash
+set -euo pipefail
+
 # ab-basic-test.sh
 # Basic Apache Bench test for IRL endpoints
 # Usage: ./benchmarks/ab-basic-test.sh

@@ -36,7 +36,7 @@ export default function () {
   });
 
   // Test 2: POST /api/request with random agentId
-  const agentId = `agent-${Math.floor(Math.random() * 1000)}`;
+  const agentId = `agent-${Math.floor(Math.random() * 10000)}`;
   const requestPayload = JSON.stringify({
     agentId: agentId,
     tokens: 1,

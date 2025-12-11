@@ -1,4 +1,6 @@
 #!/bin/bash
+set -euo pipefail
+
 # ab-stress-test.sh
 # Stress test with high concurrency using Apache Bench
 # Usage: ./benchmarks/ab-stress-test.sh
@@ -17,23 +19,29 @@ test_multiple_agents() {
     local num_agents=$2
     local requests_per_agent=$3
     local concurrency=$4
+    local temp_files=()
     
     echo "Testing ${num_agents} agents with ${requests_per_agent} requests each at concurrency ${concurrency}"
     
     for i in $(seq 1 $num_agents); do
         AGENT_ID="stress-agent-${i}"
         TEMP_FILE=$(mktemp)
+        temp_files+=("$TEMP_FILE")
         echo "{\"agentId\":\"${AGENT_ID}\",\"tokens\":1}" > "$TEMP_FILE"
         
         ab -n ${requests_per_agent} -c ${concurrency} \
            -p "$TEMP_FILE" \
            -T "application/json" \
            "${BASE_URL}${endpoint}" > /dev/null 2>&1 &
-        
-        rm -f "$TEMP_FILE"
     done
     
     wait
+    
+    # Clean up temp files after all processes complete
+    for f in "${temp_files[@]}"; do
+        rm -f "$f"
+    done
+    
     echo "  ✓ Completed ${num_agents} parallel agent tests"
 }
 

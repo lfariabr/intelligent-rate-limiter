@@ -561,18 +561,20 @@ function calculateVirtualFinishTime(
 
 ## � Benchmarks & Performance
 
-The IRL system has been extensively load tested to ensure production-ready performance.
+> **⚠️ Note:** The metrics below are **projected performance targets** based on architectural analysis. Full validation requires installing Apache Bench and k6, then running the benchmark suite.
 
-### Quick Performance Summary
+The IRL system includes comprehensive load testing infrastructure with projected performance targets.
 
-| Metric | Value |
-|--------|-------|
+### Projected Performance Targets
+
+| Metric | Target Value |
+|--------|--------------|
 | **Peak Throughput** | 3,500+ req/s |
-| **Average Latency (P50)** | 24 ms |
-| **95th Percentile (P95)** | 187 ms |
-| **Concurrent Agents** | 5,000+ |
-| **Success Rate** | 98.5% |
-| **Rate Limit Effectiveness** | 28% of requests properly throttled |
+| **Average Latency (P50)** | <50 ms |
+| **95th Percentile (P95)** | <200 ms |
+| **Concurrent Agents** | 5,000+ (single instance) |
+| **Success Rate** | >95% |
+| **Rate Limit Effectiveness** | 25-35% properly throttled |
 
 ### Load Testing Tools
 

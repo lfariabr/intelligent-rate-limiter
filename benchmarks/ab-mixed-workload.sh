@@ -1,10 +1,16 @@
 #!/bin/bash
+set -euo pipefail
+
 # ab-mixed-workload.sh
 # Mixed workload test with varying token consumption
 # Usage: ./benchmarks/ab-mixed-workload.sh
 
 BASE_URL=${BASE_URL:-"http://localhost:3000"}
 OUTPUT_DIR="./benchmark-results"
+
+# Array to track temp files for cleanup
+TEMP_FILES=()
+trap 'rm -f "${TEMP_FILES[@]}"' EXIT INT TERM
 
 # Create output directory if it doesn't exist
 mkdir -p "$OUTPUT_DIR"
@@ -63,6 +69,7 @@ echo "   Launching 20 agents with 100 requests each..."
 
 for i in $(seq 1 20); do
     TEMP_FILE=$(mktemp)
+    TEMP_FILES+=("$TEMP_FILE")
     TOKENS=$((1 + RANDOM % 10)) # Random 1-10 tokens
     echo "{\"agentId\":\"burst-agent-${i}\",\"tokens\":${TOKENS}}" > "$TEMP_FILE"
     
@@ -70,8 +77,6 @@ for i in $(seq 1 20); do
        -p "$TEMP_FILE" \
        -T "application/json" \
        "${BASE_URL}/api/request" > /dev/null 2>&1 &
-    
-    rm -f "$TEMP_FILE"
 done
 
 wait

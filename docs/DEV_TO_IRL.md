@@ -310,11 +310,13 @@ Integration with **real-time grid carbon intensity data** from the Green Softwar
 
 ## Benchmarks & Impact
 
-### Technical Performance (Production-Ready)
+### Technical Performance (Projected Targets)
 
-**Performance validated across two deployment scenarios:**
+> **⚠️ Note:** The metrics below are **projected performance targets** based on architectural analysis and industry benchmarks for similar Node.js/Redis systems. Full validation requires Apache Bench and k6 installation and execution in production-like environments.
 
-#### Single-Instance Performance (Validated via k6/Apache Bench)
+**Performance targets across two deployment scenarios:**
+
+#### Single-Instance Performance (Target Metrics)
 
 | Metric | Target | Achieved | Status |
 |--------|--------|----------|--------|
@@ -327,10 +329,10 @@ Integration with **real-time grid carbon intensity data** from the Green Softwar
 | **Redis Latency** | <5ms | 0.8ms | ✅ |
 
 **Hardware:** Modest development setup (Docker + Node.js)  
-**Test Tools:** k6, Apache Bench  
-**Duration:** Multi-hour sustained load + spike tests
+**Test Infrastructure:** k6, Apache Bench (benchmark scripts ready)  
+**Status:** Target metrics pending validation with installed test tools
 
-#### Scaled Production Performance (Projected)
+#### Scaled Production Performance (Projected Targets)
 
 | Metric | Target | Projected | Status |
 |--------|--------|-----------|--------|
@@ -341,11 +343,11 @@ Integration with **real-time grid carbon intensity data** from the Green Softwar
 | **Abuse Detection (P/R)** | >90% / >85% | 94% / 89% | ✅ |
 | **DDoS Uptime** (100k bad agents) | >99% | 99.7% | ✅ |
 
-**Scaling Path:** Linear scaling observed—single instance handles 5,000 agents, so 10 instances handle 50,000+
+**Scaling Path:** Projected linear scaling—single instance targets 5,000 agents, so 10 instances target 50,000+
 
-**Translation for non-engineers:** The system works excellently on a single server (5,000 concurrent AI agents) and scales to enterprise-level (50,000+ agents) by adding more servers behind a load balancer.
+**Translation for non-engineers:** The architecture is designed to handle 5,000 concurrent AI agents on a single server and scale to enterprise-level (50,000+ agents) by adding more servers behind a load balancer. Full validation pending actual load test execution.
 
-> 📊 **[View Complete Benchmark Results](https://github.com/lfariabr/intelligent-rate-limiter/blob/master/benchmarks/SAMPLE_RESULTS.md)** | **[Testing Guide](https://github.com/lfariabr/intelligent-rate-limiter/blob/master/benchmarks/BENCHMARKING.md)**
+> 📊 **[View Performance Targets & Testing Guide](https://github.com/lfariabr/intelligent-rate-limiter/blob/master/benchmarks/SAMPLE_RESULTS.md)** | **[How to Run Benchmarks](https://github.com/lfariabr/intelligent-rate-limiter/blob/master/benchmarks/BENCHMARKING.md)**
 
 ---
 
