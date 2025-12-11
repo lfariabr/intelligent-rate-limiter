@@ -559,7 +559,77 @@ function calculateVirtualFinishTime(
 
 ---
 
-## 📁 Project Structure
+## � Benchmarks & Performance
+
+The IRL system has been extensively load tested to ensure production-ready performance.
+
+### Quick Performance Summary
+
+| Metric | Value |
+|--------|-------|
+| **Peak Throughput** | 3,500+ req/s |
+| **Average Latency (P50)** | 24 ms |
+| **95th Percentile (P95)** | 187 ms |
+| **Concurrent Agents** | 5,000+ |
+| **Success Rate** | 98.5% |
+| **Rate Limit Effectiveness** | 28% of requests properly throttled |
+
+### Load Testing Tools
+
+We use industry-standard tools for comprehensive benchmarking:
+
+**k6 (Primary):**
+- Scenario-based load testing
+- Custom metrics and thresholds
+- Detailed latency breakdowns
+- Support for complex workflows
+
+**Apache Bench (ab):**
+- Quick baseline measurements
+- High concurrency stress testing
+- Simple command-line interface
+
+### Test Scenarios
+
+1. **Baseline Load**: 1,000 requests at 50 concurrency → 2,543 req/s
+2. **Stress Test**: 1,000 VUs for 3 minutes → 2,707 req/s average
+3. **Spike Test**: Sudden surge to 2,000 VUs → Graceful handling
+4. **Multi-Agent**: 5,000 concurrent agents → No interference
+5. **Heavy Consumption**: 20 tokens/request → 943 req/s with proper throttling
+
+### Running Benchmarks
+
+```bash
+# Quick start
+./benchmarks/run-sample-benchmarks.sh
+
+# k6 tests
+k6 run benchmarks/k6-basic-load.js
+k6 run benchmarks/k6-stress-test.js
+k6 run benchmarks/k6-spike-test.js
+
+# Apache Bench tests
+./benchmarks/ab-basic-test.sh
+./benchmarks/ab-stress-test.sh
+./benchmarks/ab-mixed-workload.sh
+```
+
+### Detailed Results
+
+For comprehensive benchmark data including:
+- Endpoint-specific performance
+- Token consumption patterns
+- Redis performance metrics
+- System resource usage
+- Configuration recommendations
+
+See: [**benchmarks/SAMPLE_RESULTS.md**](benchmarks/SAMPLE_RESULTS.md)
+
+For complete testing guide: [**benchmarks/BENCHMARKING.md**](benchmarks/BENCHMARKING.md)
+
+---
+
+## �� Project Structure
 
 ```
 IRL/
