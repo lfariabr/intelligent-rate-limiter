@@ -19,6 +19,10 @@ export const agentLoader = new DataLoader<string, any>(async (ids) => {
 export const quotaLoader = new DataLoader<string, any>(async (agentIds) => {
   const results = await Promise.all(agentIds.map(async (id) => {
     const q = await redisClient.hgetall(`quota:${id}`);
+    // Handle empty results from Redis
+    if (!q || Object.keys(q).length === 0) {
+      return null;
+    }
     return {
       requestsPerMinute: parseInt(q.requestsPerMinute || '0', 10),
       requestsPerHour: parseInt(q.requestsPerHour || '0', 10),

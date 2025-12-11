@@ -39,8 +39,10 @@ const resolvers = {
   },
   Agent: {
     quotas: (parent: any) => quotaLoader.load(parent.id),
-    currentUsage: (parent: any) => ({
-      /* map usage from storage */
+    currentUsage: (_parent: any) => ({
+      requestsLastMinute: 0,
+      requestsLastHour: 0,
+      tokensConsumed: 0,
     }),
     auditTrail: (parent: any, { limit = 20 }: any) =>
       auditLoader.load(parent.id).then((arr) => arr.slice(0, limit)),

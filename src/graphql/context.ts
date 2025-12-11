@@ -1,9 +1,7 @@
 import { verifyJWT } from '../utils/jwt';
 import { agentLoader } from './dataloaders/agentLoader';
-import { PubSub } from 'graphql-subscriptions';
 import redisClient from '../db/redis';
-
-const pubsub = new PubSub();
+import { pubsub } from './subscriptions';
 
 export async function createContext({ req }: any) {
   const auth = req?.headers?.authorization || '';
