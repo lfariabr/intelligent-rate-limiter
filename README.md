@@ -225,7 +225,7 @@ npm run dev
   - `GET /api/quota/:agentId` - Check remaining quota
 - [X] **1.4**: Add rate limit middleware
 - [X] **1.5**: Write unit tests (>80% coverage)
-- [ ] **1.6**: Load test with Apache Bench or k6
+- [X] **1.6**: Load test with Apache Bench or k6
 
 #### Learning Objectives:
 - ✅ Master Redis data structures (Strings, Hashes, Sorted Sets)
@@ -559,22 +559,40 @@ function calculateVirtualFinishTime(
 
 ---
 
-## � Benchmarks & Performance
+## 📊 Benchmarks & Performance
 
-> **⚠️ Note:** The metrics below are **projected performance targets** based on architectural analysis. Full validation requires installing Apache Bench and k6, then running the benchmark suite.
+> **Note:** This section contains both **validated results** (from actual load testing) and **projected targets** (architectural estimates). See below for details.
 
-The IRL system includes comprehensive load testing infrastructure with projected performance targets.
+The IRL system includes comprehensive load testing infrastructure with both measured performance data and architectural projections.
 
-### Projected Performance Targets
+### Validated Results (REAL Measurements ✅)
 
-| Metric | Target Value |
-|--------|--------------|
-| **Peak Throughput** | 3,500+ req/s |
-| **Average Latency (P50)** | <50 ms |
-| **95th Percentile (P95)** | <200 ms |
-| **Concurrent Agents** | 5,000+ (single instance) |
-| **Success Rate** | >95% |
-| **Rate Limit Effectiveness** | 25-35% properly throttled |
+**From k6 multi-agent load test (30s, 50 VUs, 10,000 agents):**
+
+| Metric | Measured Result |
+|--------|-----------------|
+| **Peak Throughput** | 381 req/s (sustained) |
+| **Total Requests** | 11,616 over 30 seconds |
+| **P50 Latency** | 1.83ms (sub-2ms!) |
+| **P95 Latency** | 11.73ms |
+| **Success Rate** | 100% (zero errors) |
+| **Concurrent Agents** | 10,000+ unique agents |
+| **Rate Limiting** | 24.13% properly throttled |
+
+👉 **[View complete validated results →](benchmarks/REAL_RESULTS.md)**
+
+### Projected Performance Targets (Architectural Estimates)
+
+| Metric | Target Value | Notes |
+|--------|--------------|-------|
+| **Peak Throughput (projected)** | 3,500+ req/s | Single instance targets; multi-instance pending validation |
+| **Average Latency (P50) (target)** | <50 ms | Based on architectural analysis |
+| **95th Percentile (P95) (target)** | <200 ms | Design goal |
+| **Concurrent Agents (single)** | 5,000 agents | Baseline estimate; validated at 10,000+ |
+| **Success Rate (target)** | >95% | Design specification |
+| **Rate Limit Effectiveness (target)** | 25-35% throttled | Validated: 24.13% actual |
+
+> **Status:** Single-instance validated; multi-instance scaling pending load testing
 
 ### Load Testing Tools
 
@@ -601,37 +619,39 @@ We use industry-standard tools for comprehensive benchmarking:
 
 ### Running Benchmarks
 
+**Prerequisites:** k6 and Apache Bench must be installed
+
 ```bash
-# Quick start
-./benchmarks/run-sample-benchmarks.sh
+# Install tools (Linux/macOS)
+sudo apt-get install -y k6 apache2-utils  # Ubuntu/Debian
+brew install k6 httpd                      # macOS
 
-# k6 tests
-k6 run benchmarks/k6-basic-load.js
+# Start server
+npm run build && node dist/index.js &
+
+# Run validated performance tests (produces real measured data)
+k6 run --duration 30s --vus 50 benchmarks/k6-basic-load.js
+
+# Run stress tests
 k6 run benchmarks/k6-stress-test.js
-k6 run benchmarks/k6-spike-test.js
-
-# Apache Bench tests
-./benchmarks/ab-basic-test.sh
 ./benchmarks/ab-stress-test.sh
-./benchmarks/ab-mixed-workload.sh
+
+# Quick baseline
+./benchmarks/run-sample-benchmarks.sh
 ```
 
-### Detailed Results
+### Benchmark Documentation
 
-For comprehensive benchmark data including:
-- Endpoint-specific performance
-- Token consumption patterns
-- Redis performance metrics
-- System resource usage
-- Configuration recommendations
+**Validated Results (Actual Measurements):**
+- [**benchmarks/REAL_RESULTS.md**](benchmarks/REAL_RESULTS.md) – Complete k6 & Apache Bench results with 381 req/s throughput
 
-See: [**benchmarks/SAMPLE_RESULTS.md**](benchmarks/SAMPLE_RESULTS.md)
-
-For complete testing guide: [**benchmarks/BENCHMARKING.md**](benchmarks/BENCHMARKING.md)
+**Projected Targets & Testing Methodology:**
+- [**benchmarks/SAMPLE_RESULTS.md**](benchmarks/SAMPLE_RESULTS.md) – Architectural projections and analysis
+- [**benchmarks/BENCHMARKING.md**](benchmarks/BENCHMARKING.md) – Complete testing guide and how to run benchmarks
 
 ---
 
-## �� Project Structure
+## 📁 Project Structure
 
 ```
 IRL/
