@@ -1,8 +1,6 @@
 import { WebSocketServer } from 'ws';
 import { useServer } from 'graphql-ws/use/ws';
 import { execute, subscribe } from 'graphql';
-import { schema } from './schema';
-import { createContext } from './context';
 import { PubSub } from 'graphql-subscriptions';
 import { verifyJWT } from '../utils/jwt';
 
@@ -19,15 +17,16 @@ export function applyWebsocketServer({ httpServer, schema }: { httpServer: any; 
       schema,
       execute,
       subscribe,
-      onConnect: async (ctx: any) => {
-      },
-      context: async (ctx: any, msg: any, args: any) => {
+      onConnect: async (_ctx: any) => {},
+      context: async (ctx: any, _msg: any, _args: any) => {
         const token = ctx.connectionParams?.authorization?.replace(/^Bearer\s+/i, '');
         let user = null;
         if (token) {
           try {
             user = verifyJWT(token);
-          } catch (e) {}
+          } catch {
+            // Token verification failed, user stays null
+          }
         }
         return { user, pubsub };
       },

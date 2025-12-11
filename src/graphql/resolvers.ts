@@ -1,4 +1,3 @@
-import { GraphQLResolveInfo } from 'graphql';
 import { agentLoader, quotaLoader, auditLoader } from './dataloaders/agentLoader';
 import { pubsub } from './subscriptions';
 
@@ -40,8 +39,11 @@ const resolvers = {
   },
   Agent: {
     quotas: (parent: any) => quotaLoader.load(parent.id),
-    currentUsage: (parent: any) => ({ /* map usage from storage */ }),
-    auditTrail: (parent: any, { limit = 20 }: any) => auditLoader.load(parent.id).then(arr => arr.slice(0, limit)),
+    currentUsage: (parent: any) => ({
+      /* map usage from storage */
+    }),
+    auditTrail: (parent: any, { limit = 20 }: any) =>
+      auditLoader.load(parent.id).then((arr) => arr.slice(0, limit)),
   },
 };
 

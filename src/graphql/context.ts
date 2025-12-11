@@ -12,7 +12,8 @@ export async function createContext({ req }: any) {
   if (token) {
     try {
       user = verifyJWT(token);
-    } catch (e) {
+    } catch {
+      // Token verification failed, user stays null
     }
   }
 
@@ -21,7 +22,11 @@ export async function createContext({ req }: any) {
       return { allowed: true, reason: 'stub' };
     },
     overrideQuota: async (agentId: string, amount: number) => {
-      return { requestsPerMinute: amount, requestsPerHour: amount * 60, resetTime: new Date().toISOString() };
+      return {
+        requestsPerMinute: amount,
+        requestsPerHour: amount * 60,
+        resetTime: new Date().toISOString(),
+      };
     },
   };
 
